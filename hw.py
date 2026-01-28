@@ -45,53 +45,53 @@ def clean_up(driver):
     
 
     
-# @pytest.mark.parametrize(
-#     "username, expected_result",
-#     [
-#         ("standard_user", True),
-#         ("locked_out_user", False),
-#         ("problem_user", True),
-#         ("performance_glitch_user", True),
-#         ("error_user", False),
-#         ("visual_user", True),
-#     ],
-#     ids=[
-#         "정상 사용자",
-#         "잠긴 사용자",
-#         "문제 사용자",
-#         "성능 지연 사용자",
-#         "에러 사용자",
-#         "비주얼 사용자",
-#     ]
-# )
-# @pytest.fixture(autouse=True)
-# def auto_close_popups(driver):
-#     yield
-#     driver.execute_script("""
-#         document.body.style.overflow = 'auto';
-#         document.querySelectorAll('[role="dialog"]').forEach(e => e.remove());
-#     """)
+@pytest.mark.parametrize(
+    "username, expected_result",
+    [
+        ("standard_user", True),
+        ("locked_out_user", False),
+        ("problem_user", True),
+        ("performance_glitch_user", True),
+        ("error_user", False),
+        ("visual_user", True),
+    ],
+    ids=[
+        "정상 사용자",
+        "잠긴 사용자",
+        "문제 사용자",
+        "성능 지연 사용자",
+        "에러 사용자",
+        "비주얼 사용자",
+    ]
+)
+@pytest.fixture(autouse=True)
+def auto_close_popups(driver):
+    yield
+    driver.execute_script("""
+        document.body.style.overflow = 'auto';
+        document.querySelectorAll('[role="dialog"]').forEach(e => e.remove());
+    """)
     
     
-# def test_login_parametrize(driver, username, expected_result):
-#     driver.find_element(By.CSS_SELECTOR, '[data-test="username"]').send_keys(username)
-#     driver.find_element(By.CSS_SELECTOR, '[data-test="password"]').send_keys("secret_sauce")
+def test_login_parametrize(driver, username, expected_result):
+    driver.find_element(By.CSS_SELECTOR, '[data-test="username"]').send_keys(username)
+    driver.find_element(By.CSS_SELECTOR, '[data-test="password"]').send_keys("secret_sauce")
     
-#     # id.send_keys("standard_user")
-#     # pw.send_keys("secret_sauce")
-#     # time.sleep(2)
-#     driver.find_element(By.CSS_SELECTOR, '[data-test="login-button"]').click()
+    # id.send_keys("standard_user")
+    # pw.send_keys("secret_sauce")
+    # time.sleep(2)
+    driver.find_element(By.CSS_SELECTOR, '[data-test="login-button"]').click()
     
-#     time.sleep(2)
+    time.sleep(2)
     
     
-#     if expected_result:
-#         # 로그인 성공 → inventory 페이지
-#         assert "https://www.saucedemo.com/inventory.html" in driver.current_url
-#     else:
-#         # 로그인 실패 → 에러 메시지 표시
-#         error_msg = driver.find_element(By.CLASS_NAME, "error-message-container")
-#         assert error_msg.is_displayed()
+    if expected_result:
+        # 로그인 성공 → inventory 페이지
+        assert "inventory.html" in driver.current_url
+    else:
+        # 로그인 실패 → 에러 메시지 표시
+        error_msg = driver.find_element(By.CLASS_NAME, "error-message-container")
+        assert error_msg.is_displayed()
     
     
 def test_login(driver, clean_up):
@@ -115,17 +115,17 @@ def test_login(driver, clean_up):
     # data-test="remove-sauce-labs-bike-light"
     
     time.sleep(2)
-    # clean_up(driver)
-    # driver.find_element(By.CSS_SELECTOR, '[data-test="inventory-item-name"]').click()
-    # time.sleep(2)
-    # driver.back()
-    # time.sleep(2)
-    # driver.find_element(By.CSS_SELECTOR, '[data-test="shopping-cart-link"]').click()
-    # time.sleep(2)
-    # driver.find_element(By.CSS_SELECTOR, '[data-test="remove-sauce-labs-backpack"]').click()
-    # driver.back()
-    # time.sleep(2)
-    # driver.find_element(By.CSS_SELECTOR, '[data-test="remove-sauce-labs-bike-light"]').click()
+    clean_up(driver)
+    driver.find_element(By.CSS_SELECTOR, '[data-test="inventory-item-name"]').click()
+    time.sleep(2)
+    driver.back()
+    time.sleep(2)
+    driver.find_element(By.CSS_SELECTOR, '[data-test="shopping-cart-link"]').click()
+    time.sleep(2)
+    driver.find_element(By.CSS_SELECTOR, '[data-test="remove-sauce-labs-backpack"]').click()
+    driver.back()
+    time.sleep(2)
+    driver.find_element(By.CSS_SELECTOR, '[data-test="remove-sauce-labs-bike-light"]').click()
     time.sleep(2)
     
 def reset_cart(driver):
